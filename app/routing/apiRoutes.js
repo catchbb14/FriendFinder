@@ -5,17 +5,21 @@ function determineMatch(user) {
     var name = "";
     
 
-    function calcDifference(total, num, index) {
-        return total + (Math.abs(user.scores[index] - num));
+    function calcDifference(scoreArray) {
+        var total = 0;
+        scoreArray.forEach( function(s, index) {
+            total += Math.abs(+s - +user.scores[index]);
+        })
+        return total;
     }
 
     friendData.forEach( function(f) {
-        var difference = f.scores.reduce(calcDifference);
+        var difference = calcDifference(f.scores);
         if(difference < minDifference) {
             minDifference = difference;
             name = f.name;
         }
-        console.log("Name " + f.name + " Difference: " + difference );
+       
     })
 
     return friendData.find(f => f.name === name);
